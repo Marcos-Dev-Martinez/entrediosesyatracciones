@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Privacidad y Aviso Legal — Entre Dioses y Atracciones</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Cookiebot -->
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="126779b7-8a62-4154-903a-b8de511d8729" data-blockingmode="auto" type="text/javascript"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:    #0F1117;
+      --bg2:   #1A1D2E;
+      --bg3:   #22263A;
+      --text:  #F1F3F7;
+      --text-dim: #9CA3AF;
+      --blue:  #2563EB;
+      --blue-l:#EFF4FF;
+      --border:#2A2D3E;
+      --radius:12px;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    nav {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--blue); }
+    nav span {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+    .page-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .last-updated {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 40px;
+    }
+    .toc {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+    .toc-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+    .toc a {
+      display: block;
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+      transition: opacity 0.2s;
+    }
+    .toc a:last-child { border-bottom: none; }
+    .toc a:hover { opacity: 0.75; }
+    section {
+      margin-bottom: 48px;
+      scroll-margin-top: 80px;
+    }
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 20px 0 8px;
+      color: var(--text);
+    }
+    p { margin-bottom: 12px; color: var(--text-dim); }
+    ul { margin: 8px 0 12px 20px; color: var(--text-dim); }
+    ul li { margin-bottom: 6px; }
+    a { color: var(--blue); }
+    .highlight {
+      background: var(--bg2);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+    .cookie-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 16px 0;
+    }
+    .cookie-table th {
+      background: var(--bg3);
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+    .cookie-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-dim);
+      vertical-align: top;
+    }
+    .cookie-table tr:last-child td { border-bottom: none; }
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 12px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 600px) {
+      .wrapper { padding: 32px 16px 60px; }
+      .cookie-table { font-size: 11px; }
+      .cookie-table th, .cookie-table td { padding: 8px; }
+    }
+  
+    /* La tabla de cookies es ancha: en móvil se desplaza dentro de su
+       propia caja en vez de desbordar la página entera. tabindex="0"
+       para que también se pueda recorrer con el teclado. */
+    .tabla-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100%;
+      margin: 1rem 0;
+    }
+    .tabla-scroll:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    .tabla-scroll table { margin: 0; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">← Inicio</a>
+  <span>Entre Dioses y Atracciones</span>
+  <span></span>
+</nav>
+
+<div class="wrapper">
+  <p class="page-tag">Legal</p>
+  <h1>Política de Privacidad,<br>Aviso Legal y Cookies</h1>
+  <p class="last-updated">Última actualización: agosto de 2026</p>
+
+  <div class="toc">
+    <div class="toc-title">Contenido</div>
+    <a href="#aviso-legal">1. Aviso Legal</a>
+    <a href="#privacidad">2. Política de Privacidad</a>
+    <a href="#cookies">3. Política de Cookies</a>
+    <a href="#derechos">4. Tus derechos</a>
+    <a href="#contacto">5. Contacto</a>
+  </div>
+
+  <!-- 1. AVISO LEGAL -->
+  <section id="aviso-legal">
+    <h2>1. Aviso Legal</h2>
+    <p>En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa de los siguientes datos identificativos del titular de este sitio web:</p>
+    <div class="highlight">
+      <strong>Titular:</strong> Marcos Martínez<br>
+      <strong>Email de contacto:</strong> <a href="mailto:entrediosesyatracciones@gmail.com">entrediosesyatracciones@gmail.com</a><br>
+      <strong>Sitio web:</strong> quiz-entrediosesyatracciones.web.app<br>
+      <strong>Actividad:</strong> Sitio web de entretenimiento y cultura sobre parques de atracciones españoles
+    </div>
+    <h3>Condiciones de uso</h3>
+    <p>El acceso y uso de este sitio web atribuye la condición de usuario e implica la aceptación de las presentes condiciones. El titular se reserva el derecho a modificar, en cualquier momento y sin previo aviso, la presentación y configuración del sitio web.</p>
+    <h3>Propiedad intelectual</h3>
+    <p>Los contenidos del sitio web (textos, imágenes, diseño, código fuente, juegos interactivos) son titularidad de Marcos Martínez o de terceros que han autorizado su uso. Queda prohibida su reproducción, distribución o modificación sin autorización expresa.</p>
+    <h3>Responsabilidad</h3>
+    <p>El titular no se hace responsable de los daños o perjuicios que pudieran derivarse del uso del sitio web, ni de la exactitud de los datos sobre atracciones y parques publicados, que tienen carácter meramente informativo y pueden no estar actualizados.</p>
+  </section>
+
+  <!-- 2. PRIVACIDAD -->
+  <section id="privacidad">
+    <h2>2. Política de Privacidad</h2>
+    <p>En cumplimiento del Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 (LOPDGDD), se informa sobre el tratamiento de datos personales en este sitio web.</p>
+
+    <h3>Responsable del tratamiento</h3>
+    <div class="highlight">
+      <strong>Marcos Martínez</strong><br>
+      Email: <a href="mailto:entrediosesyatracciones@gmail.com">entrediosesyatracciones@gmail.com</a>
+    </div>
+
+    <h3>Qué datos se recogen y para qué</h3>
+    <ul>
+      <li><strong>Datos de navegación:</strong> dirección IP, navegador, páginas visitadas, tiempo de sesión. Se usan para estadísticas anónimas mediante Google Analytics 4 y Microsoft Clarity.</li>
+      <li><strong>Cuenta de Google (opcional):</strong> si el usuario inicia sesión en el Coasterle con su cuenta de Google, se almacena el identificador de usuario, nombre y foto de perfil en Firebase (Google) únicamente para mostrar el ranking y la racha de juego.</li>
+      <li><strong>Datos de comportamiento:</strong> Meta Pixel y TikTok Pixel registran visitas y acciones en la web con fines estadísticos y de medición de audiencias.</li>
+    </ul>
+
+    <h3>Base legal del tratamiento</h3>
+    <ul>
+      <li>Consentimiento del usuario (art. 6.1.a RGPD) para cookies analíticas y de marketing.</li>
+      <li>Interés legítimo (art. 6.1.f RGPD) para el mantenimiento del juego y la seguridad del sitio.</li>
+    </ul>
+
+    <h3>Transferencias internacionales</h3>
+    <p>Algunos proveedores (Google, Meta, TikTok) pueden transferir datos fuera del Espacio Económico Europeo. Estas transferencias se realizan bajo las garantías adecuadas establecidas por el RGPD (cláusulas contractuales tipo o decisiones de adecuación).</p>
+
+    <h3>Conservación de datos</h3>
+    <p>Los datos de navegación se conservan durante el período estrictamente necesario para cumplir la finalidad para la que se recogieron, con un máximo de 26 meses para Google Analytics. Los datos de cuenta de Google se conservan mientras el usuario mantenga su registro activo.</p>
+
+    <h3>Menores de edad</h3>
+    <p>Este sitio trata sobre parques de atracciones y puede resultar atractivo para menores. Conforme al <strong>artículo 7 de la Ley Orgánica 3/2018 (LOPDGDD)</strong>, el tratamiento de datos de menores de <strong>14 años</strong> basado en el consentimiento requiere la autorización de sus padres o tutores.</p>
+    <p>Si eres menor de 14 años, no inicies sesión con una cuenta de Google ni aceptes las cookies analíticas o de marketing sin el permiso de un adulto responsable. Puedes jugar igualmente sin identificarte: el juego funciona de forma anónima y tu resultado se guarda solo en tu propio navegador.</p>
+    <p>Si detectamos que se han recogido datos de un menor de 14 años sin autorización, se eliminarán. Si eres madre, padre o tutor y crees que ha ocurrido, escríbenos al correo del apartado de contacto y lo resolveremos.</p>
+
+    <h3>Seguridad de los datos</h3>
+    <p>Se aplican medidas técnicas y organizativas para proteger los datos frente a accesos no autorizados, alteración o pérdida. El acceso a la base de datos está restringido mediante reglas de seguridad que limitan qué información puede leerse y escribirse desde la web.</p>
+  </section>
+
+  <!-- 3. COOKIES -->
+  <section id="cookies">
+    <h2>3. Política de Cookies</h2>
+    <p>Una cookie es un fichero que se descarga en el dispositivo del usuario al acceder a un sitio web. Este sitio web utiliza cookies propias y de terceros. El usuario puede configurar su navegador para rechazar o eliminar las cookies, aunque esto puede afectar al funcionamiento del sitio.</p>
+
+    <h3>Tipos de cookies utilizadas</h3>
+    <div class="tabla-scroll" role="region" aria-label="Tabla de cookies utilizadas" tabindex="0">
+<table class="cookie-table">
+      <thead>
+        <tr>
+          <th>Cookie</th>
+          <th>Proveedor</th>
+          <th>Tipo</th>
+          <th>Finalidad</th>
+          <th>Duración</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CookieConsent</td>
+          <td>Cookiebot</td>
+          <td>Necesaria</td>
+          <td>Almacena el consentimiento de cookies del usuario</td>
+          <td>1 año</td>
+        </tr>
+        <tr>
+          <td>_ga, _ga_*</td>
+          <td>Google Analytics</td>
+          <td>Analítica</td>
+          <td>Estadísticas de uso del sitio web</td>
+          <td>2 años</td>
+        </tr>
+        <tr>
+          <td>_gtm*</td>
+          <td>Google Tag Manager</td>
+          <td>Analítica</td>
+          <td>Gestión de etiquetas y scripts</td>
+          <td>Sesión</td>
+        </tr>
+        <tr>
+          <td>_fbp</td>
+          <td>Meta (Facebook/Instagram)</td>
+          <td>Marketing</td>
+          <td>Seguimiento de conversiones y audiencias</td>
+          <td>3 meses</td>
+        </tr>
+        <tr>
+          <td>_ttp</td>
+          <td>TikTok</td>
+          <td>Marketing</td>
+          <td>Seguimiento de conversiones y audiencias</td>
+          <td>13 meses</td>
+        </tr>
+        <tr>
+          <td>_clck, _clsk</td>
+          <td>Microsoft Clarity</td>
+          <td>Analítica</td>
+          <td>Grabaciones de sesión y mapas de calor</td>
+          <td>1 año</td>
+        </tr>
+        <tr>
+          <td>firebase_*</td>
+          <td>Google Firebase</td>
+          <td>Funcional</td>
+          <td>Autenticación y almacenamiento del juego</td>
+          <td>Sesión / persistente</td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+    <h3>Cómo gestionar las cookies</h3>
+    <p>Puedes retirar o modificar tu consentimiento en cualquier momento haciendo clic en el botón de configuración de cookies que aparece en la parte inferior de la página, o configurando tu navegador:</p>
+    <ul>
+      <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
+      <li><a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias" target="_blank" rel="noopener">Mozilla Firefox</a></li>
+      <li><a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari</a></li>
+    </ul>
+  </section>
+
+  <!-- 4. DERECHOS -->
+  <section id="derechos">
+    <h2>4. Tus derechos</h2>
+    <p>De acuerdo con el RGPD y la LOPDGDD, tienes derecho a:</p>
+    <ul>
+      <li><strong>Acceso:</strong> conocer qué datos personales tuyos se están tratando.</li>
+      <li><strong>Rectificación:</strong> corregir datos inexactos o incompletos.</li>
+      <li><strong>Supresión:</strong> solicitar la eliminación de tus datos cuando ya no sean necesarios.</li>
+      <li><strong>Limitación:</strong> solicitar que se restrinja el tratamiento de tus datos.</li>
+      <li><strong>Portabilidad:</strong> recibir tus datos en un formato estructurado y de uso común.</li>
+      <li><strong>Oposición:</strong> oponerte al tratamiento de tus datos en determinadas circunstancias.</li>
+    </ul>
+    <p>Para ejercer cualquiera de estos derechos, contacta a través del email indicado en el apartado de contacto. Tienes también derecho a presentar una reclamación ante la <a href="https://www.aepd.es" target="_blank" rel="noopener">Agencia Española de Protección de Datos (AEPD)</a>.</p>
+  </section>
+
+  <!-- 5. CONTACTO -->
+  <section id="contacto">
+    <h2>5. Contacto</h2>
+    <p>Para cualquier consulta sobre esta política o para ejercer tus derechos, puedes contactar a través de:</p>
+    <div class="highlight">
+      <strong>Email:</strong> <a href="mailto:entrediosesyatracciones@gmail.com">entrediosesyatracciones@gmail.com</a><br>
+      <strong>Titular:</strong> Marcos Martínez
+    </div>
+    <p>Nos comprometemos a responder en un plazo máximo de 30 días desde la recepción de tu solicitud.</p>
+  </section>
+
+</div>
+
+<footer>
+  © <span id="year">2026</span> Entre Dioses y Atracciones · Marcos Martínez ·
+  <a href="politica.html">Política de privacidad</a>
+</footer>
+
+<script>
+  (function(){try{var y=document.getElementById('year');if(y)y.textContent=new Date().getFullYear();}catch(e){}})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Cookiebot -->
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="126779b7-8a62-4154-903a-b8de511d8729" data-blockingmode="auto" type="text/javascript"></script>
+<!-- End Cookiebot -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coasterle — Adivina la montaña rusa del día</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F8F9FB;
+  --bg2: #FFFFFF;
+  --bg3: #F1F3F7;
+  --border: rgba(0,0,0,0.08);
+  --border-bright: rgba(0,0,0,0.12);
+  --blue: #2563EB;
+  --blue-light: #3B82F6;
+  --blue-glow: rgba(37,99,235,0.25);
+  --blue-dim: rgba(37,99,235,0.10);
+  --green: #16A34A;
+  --green-glow: rgba(22,163,74,0.15);
+  --red: #DC2626;
+  --red-glow: rgba(220,38,38,0.1);
+  --yellow: #CA8A04;
+  --yellow-glow: rgba(202,138,4,0.1);
+  --text: #0F1117;
+  --text-dim: #6B7280;
+  --text-dimmer: #9CA3AF;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BACKGROUND GRID */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(37,99,235,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 32px 16px 60px;
+}
+
+/* HEADER */
+header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.logo-icon {
+  font-size: 32px;
+  animation: sway 3s ease-in-out infinite;
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.logo-text {
+  font-family: 'Syne', serif;
+  font-size: clamp(32px, 7vw, 52px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #0F1117 0%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg3);
+  border: 1px solid var(--border-bright);
+  border-radius: 99px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.dot-live {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: blink 1.5s infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* STATS BAR */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.stat-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-dimmer);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* LEGEND */
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding: 14px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.legend-dot.green { background: var(--green); }
+.legend-dot.red { background: var(--red); }
+.legend-dot.yellow { background: var(--yellow); }
+
+/* CONTROLS */
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.select-wrap {
+  flex: 1;
+  position: relative;
+}
+
+.select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dimmer);
+  pointer-events: none;
+  font-size: 14px;
+}
+
+select {
+  width: 100%;
+  padding: 13px 40px 13px 16px;
+  border-radius: var(--radius);
+  background: var(--bg2);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  font-size: 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  appearance: none;
+  transition: border-color 0.2s;
+  outline: none;
+  box-shadow: var(--shadow);
+}
+
+select:focus { border-color: var(--blue); }
+select:disabled { opacity: 0.4; cursor: not-allowed; }
+
+
+/* ─── BUSCADOR ─── */
+.search-wrap {
+  position: relative;
+  flex: 1;
+}
+.search-input {
+  width: 100%;
+  padding: 13px 16px 13px 40px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border-bright);
+  background: var(--bg3);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.search-input:focus { border-color: var(--blue); }
+.search-input:disabled { opacity: 0.4; cursor: not-allowed; }
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dimmer);
+  pointer-events: none;
+  font-size: 15px;
+}
+.search-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--bg2);
+  border: 1px solid var(--border-bright);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 50;
+}
+.search-dropdown.open { display: block; }
+.search-option {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.search-option:last-child { border-bottom: none; }
+.search-option:hover, .search-option.active { background: var(--blue-dim); color: var(--text); }
+.search-option-park {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dimmer);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.selected-chip {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--blue-dim);
+  border: 1.5px solid rgba(37,99,235,0.3);
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.selected-chip.show { display: flex; }
+.chip-clear {
+  margin-left: auto;
+  color: var(--text-dimmer);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.chip-clear:hover { color: var(--red); }
+
+.btn-guess {
+  padding: 13px 24px;
+  border-radius: var(--radius);
+  background: var(--blue);
+  color: white;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px var(--blue-glow);
+}
+
+.btn-guess:hover { background: #2563EB; transform: translateY(-1px); }
+.btn-guess:active { transform: scale(0.97); }
+.btn-guess:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* BOARD */
+.board-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.board-header-row {
+  display: grid;
+  grid-template-columns: 2fr 1.6fr 1.4fr 1fr 1fr;
+  gap: 0;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+
+.board-header-row > div {
+  padding: 10px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dimmer);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+
+.board-header-row > div:last-child { border-right: none; }
+
+.attempts-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.empty-state {
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--text-dimmer);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.empty-icon { font-size: 36px; margin-bottom: 10px; opacity: 0.4; }
+
+/* ROWS */
+.attempt-row {
+  display: grid;
+  grid-template-columns: 2fr 1.6fr 1.4fr 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.attempt-row:last-child { border-bottom: none; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.cell {
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  border-right: 1px solid var(--border);
+  min-height: 56px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.cell:last-child { border-right: none; }
+
+.cell-hint {
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 3px;
+  opacity: 0.9;
+  letter-spacing: 0.04em;
+}
+
+/* Cell states */
+.cell.neutral {
+  background: var(--bg2);
+  color: var(--text);
+}
+
+.cell.correct {
+  background: rgba(34,197,94,0.12);
+  border-color: rgba(34,197,94,0.2);
+  color: var(--green);
+}
+
+.cell.correct::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, var(--green-glow), transparent 70%);
+  pointer-events: none;
+}
+
+.cell.wrong {
+  background: rgba(239,68,68,0.08);
+  border-color: rgba(239,68,68,0.15);
+  color: #FC8080;
+}
+
+.cell.partial {
+  background: rgba(234,179,8,0.1);
+  border-color: rgba(234,179,8,0.2);
+  color: var(--yellow);
+}
+
+/* WIN BANNER */
+.win-banner {
+  display: none;
+  margin-top: 20px;
+  background: linear-gradient(135deg, rgba(22,163,74,0.08), rgba(37,99,235,0.06));
+  border: 1px solid rgba(22,163,74,0.25);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.win-banner.show { display: block; }
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.win-emoji { font-size: 48px; margin-bottom: 12px; }
+.win-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.win-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; }
+
+.win-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 11px 24px;
+  border-radius: 99px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.2s;
+}
+.win-share:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--green-glow); }
+
+/* LOSE BANNER */
+.lose-banner {
+  display: none;
+  margin-top: 20px;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.lose-banner.show { display: block; }
+.lose-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+.lose-answer {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+.lose-answer strong { color: var(--text); font-weight: 700; }
+
+.btn-retry {
+  background: var(--bg3);
+  border: 1px solid var(--border-bright);
+  color: var(--text);
+  padding: 10px 22px;
+  border-radius: 99px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-retry:hover { border-color: var(--blue); color: var(--blue); }
+
+/* HOW TO */
+.how-to {
+  margin-top: 32px;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.how-to-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+  margin-bottom: 14px;
+}
+
+.how-to-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.how-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.how-num {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: var(--bg3);
+  border: 1px solid var(--border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+/* STREAK BANNER */
+.streak-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(202,138,4,0.08), rgba(234,179,8,0.05));
+  border: 1px solid rgba(202,138,4,0.2);
+  border-radius: var(--radius);
+  padding: 10px 18px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--yellow);
+}
+.streak-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* GLOBAL STATS */
+.global-stats {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-top: 20px;
+}
+.global-stats-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+  margin-bottom: 14px;
+  text-align: center;
+}
+.global-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.gs-item {
+  text-align: center;
+  padding: 10px 6px;
+  background: var(--bg3);
+  border-radius: 10px;
+}
+.gs-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--blue);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.gs-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-dimmer);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* DISTRIBUTION BAR */
+.distrib-wrap {
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.distrib-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+  margin-bottom: 10px;
+}
+.distrib-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+.distrib-label {
+  width: 16px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-align: center;
+  flex-shrink: 0;
+}
+.distrib-bar-wrap {
+  flex: 1;
+  background: var(--bg3);
+  border-radius: 99px;
+  height: 18px;
+  overflow: hidden;
+}
+.distrib-bar {
+  height: 100%;
+  background: var(--blue);
+  border-radius: 99px;
+  min-width: 2px;
+  transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+}
+
+/* RANKING */
+.ranking-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-top: 20px;
+}
+.ranking-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ranking-date {
+  font-size: 10px;
+  color: var(--text-dimmer);
+  margin-left: auto;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+.ranking-row:hover { background: var(--bg3); }
+.ranking-row.me { background: var(--blue-dim); border: 1px solid rgba(37,99,235,0.2); }
+.rank-pos {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--bg3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.rank-pos.gold   { background: rgba(202,138,4,0.15); color: var(--yellow); }
+.rank-pos.silver { background: rgba(156,163,175,0.2); color: #9CA3AF; }
+.rank-pos.bronze { background: rgba(180,83,9,0.12); color: #B45309; }
+.rank-name { flex: 1; font-weight: 600; color: var(--text); }
+.rank-attempts {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue);
+  background: var(--blue-dim);
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+.rank-streak {
+  font-size: 11px;
+  color: var(--yellow);
+  font-weight: 600;
+}
+.ranking-empty {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-dimmer);
+  font-size: 13px;
+}
+.ranking-loading {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-dimmer);
+  font-size: 12px;
+}
+
+/* NICKNAME MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  background: var(--bg2);
+  border: 1px solid var(--border-bright);
+  border-radius: 20px;
+  padding: 32px 28px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.modal-emoji { font-size: 40px; margin-bottom: 12px; }
+.modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.modal-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.5; }
+.modal-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border-bright);
+  background: var(--bg3);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  outline: none;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+.modal-input:focus { border-color: var(--blue); }
+.modal-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-btn:hover { background: var(--blue-light); }
+.modal-skip {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-dimmer);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* STREAK SHARE BTN */
+.streak-share-btn {
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 99px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.streak-share-btn:hover { background: #1ebe5d; transform: scale(1.04); }
+
+/* MILESTONE MODAL */
+.milestone-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.milestone-overlay.show { display: flex; }
+.milestone-box {
+  background: var(--bg2);
+  border: 1px solid var(--border-bright);
+  border-radius: 24px;
+  padding: 36px 28px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  position: relative;
+}
+.milestone-fire {
+  font-size: 56px;
+  margin-bottom: 8px;
+  display: block;
+  animation: bounce 0.6s ease infinite alternate;
+}
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-8px); }
+}
+.milestone-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--yellow);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.milestone-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.milestone-msg {
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.milestone-btns { display: flex; flex-direction: column; gap: 10px; }
+.btn-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-whatsapp:hover { background: #1ebe5d; transform: translateY(-1px); }
+.btn-share-other {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--bg3);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-share-other:hover { background: var(--bg2); border-color: var(--border-bright); }
+.milestone-close {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-dimmer);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+/* WIN BANNER mejorado */
+.win-share-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* AUTH */
+.btn-google {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: #1f1f1f;
+  border: 1px solid #e0e0e0;
+  border-radius: 99px;
+  padding: 7px 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-google:hover { background: #f5f5f5; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.btn-google svg { width: 16px; height: 16px; flex-shrink: 0; }
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--border-bright);
+}
+.user-avatar-placeholder {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+}
+.btn-signout {
+  font-size: 11px;
+  color: var(--text-dimmer);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.btn-signout:hover { color: var(--red); }
+
+/* FOOTER */
+.game-footer {
+  text-align: center;
+  margin-top: 36px;
+  font-size: 12px;
+  color: var(--text-dimmer);
+}
+.game-footer a {
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ═══ MOBILE ═══ */
+@media (max-width: 600px) {
+
+  .wrapper { padding: 20px 10px 48px; }
+
+  /* Nav */
+  nav { padding: 10px 14px; }
+  nav span:last-child { display: none; }
+
+  /* Header */
+  .logo-text { font-size: 36px; }
+  .header-sub { font-size: 12px; }
+  header { margin-bottom: 20px; }
+
+  /* Stats */
+  .stats-bar { gap: 6px; margin-bottom: 16px; }
+  .stat-item { padding: 10px 6px; }
+  .stat-num { font-size: 20px; }
+  .stat-label { font-size: 9px; }
+
+  /* Legend */
+  .legend { gap: 10px; padding: 10px 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .legend-item { font-size: 11px; gap: 5px; }
+  .legend-dot { width: 10px; height: 10px; }
+
+  /* Controls */
+  .controls { flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .btn-guess { width: 100%; justify-content: center; padding: 13px 20px; }
+  select { font-size: 14px; padding: 13px 36px 13px 14px; }
+
+  /* Board — columnas más estrechas en móvil */
+  .board-header-row,
+  .attempt-row {
+    grid-template-columns: 1.8fr 1.4fr 1.1fr 0.8fr 0.8fr;
+  }
+
+  .board-header-row > div {
+    padding: 8px 4px;
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .cell {
+    padding: 8px 4px;
+    font-size: 11px;
+    min-height: 48px;
+  }
+
+  .cell-hint { font-size: 9px; }
+
+  .empty-state { padding: 32px 16px; font-size: 13px; }
+  .empty-icon { font-size: 28px; }
+
+  /* Win / Lose banners */
+  .win-banner { padding: 20px 16px; }
+  .win-emoji { font-size: 36px; }
+  .win-title { font-size: 20px; }
+  .win-sub { font-size: 13px; }
+  .lose-banner { padding: 18px 14px; }
+  .lose-title { font-size: 18px; }
+
+  /* How to */
+  .how-to { padding: 16px 14px; margin-top: 24px; }
+  .how-item { font-size: 12px; }
+}
+</style>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MFDBXR3L');</script>
+<!-- End Google Tag Manager -->
+<!-- Google Analytics GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QKT5CXJMKR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QKT5CXJMKR');
+</script>
+<!-- End Google Analytics -->
+<!-- TikTok Pixel -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+  ttq.load('D881D7BC77U82S86Q6DG');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- End TikTok Pixel -->
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1892398958127879');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1892398958127879&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "wv0ewnhd81");
+</script>
+<!-- End Microsoft Clarity -->
+<!-- Open Graph -->
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://quiz-entrediosesyatracciones.web.app/coasterle.html">
+<meta property="og:title"       content="Coasterle — El Wordle de las Atracciones Españolas">
+<meta property="og:description" content="Adivina la atracción misteriosa del día en 6 intentos. Montañas rusas y flats de los mejores parques españoles. ¿Puedes acertarlo?">
+<meta property="og:image"       content="https://quiz-entrediosesyatracciones.web.app/og-coasterle.jpg">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="description"        content="Adivina la atracción misteriosa del día en 6 intentos. Montañas rusas y flats de los mejores parques españoles.">
+<!-- End Open Graph -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFDBXR3L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<!-- NAV -->
+<nav style="background:var(--bg2); border-bottom:1px solid var(--border); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:var(--shadow);">
+  <a href="index.html" style="display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--text-dim); font-size:13px; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif; transition:color 0.2s;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text-dim)'">
+    ← Inicio
+  </a>
+  <span style="font-family:'Syne',sans-serif; font-size:15px; font-weight:800; color:var(--text);">COASTERLE</span>
+  <div id="authArea">
+    <button class="btn-google" id="btnLogin">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Entrar
+    </button>
+    <div class="user-chip" id="userChip" style="display:none;">
+      <div class="user-avatar-placeholder" id="userAvatar">?</div>
+      <span id="userName" style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+      <button class="btn-signout" id="btnSignout">Salir</button>
+    </div>
+  </div>
+</nav>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-top">
+      <div class="logo-icon">🎢</div>
+      <div class="logo-text">COASTERLE</div>
+    </div>
+    <p class="header-sub">Adivina la atracción misteriosa de los parques españoles</p>
+    <div class="header-badge">
+      <div class="dot-live"></div>
+      <span id="dailyLabel">Reto del día</span>
+    </div>
+  </header>
+
+  <!-- STREAK -->
+  <div class="streak-banner" id="streakBanner" style="display:none;">
+    🔥 <span>Racha:</span> <span class="streak-num" id="streakNum">0</span> <span>días</span>
+    <button class="streak-share-btn" id="streakShareBtn" onclick="shareStreak()">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 0C5.376 0 0 5.374 0 11.988c0 2.114.554 4.1 1.522 5.828L.055 23.454l5.797-1.52C7.617 22.871 9.75 23.4 11.99 23.4 18.605 23.4 24 18.026 24 11.412 24 4.8 18.605 0 11.99 0zm0 21.455c-1.942 0-3.784-.522-5.373-1.433l-.385-.228-3.99 1.046 1.065-3.885-.251-.399C1.997 15.072 1.5 13.58 1.5 11.988 1.5 6.226 6.226 1.5 11.99 1.5c5.764 0 10.51 4.726 10.51 10.488 0 5.763-4.747 9.467-10.51 9.467z"/></svg>
+      Compartir racha
+    </button>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num" id="statAttempts">0</div>
+      <div class="stat-label">Intentos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="statMax">6</div>
+      <div class="stat-label">Máx. intentos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="statLeft">6</div>
+      <div class="stat-label">Restantes</div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot green"></div>
+      <span>Correcto</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot yellow"></div>
+      <span>Cerca (±10m / ±1 inv.)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot red"></div>
+      <span>Incorrecto</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="search-wrap" id="searchWrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="text" placeholder="Busca una atracción..." autocomplete="off">
+      <div class="search-dropdown" id="searchDropdown"></div>
+      <div class="selected-chip" id="selectedChip">
+        <span id="selectedName">—</span>
+        <span class="chip-clear" id="chipClear">✕</span>
+      </div>
+    </div>
+    <button class="btn-guess" id="btnGuess">Enviar</button>
+  </div>
+
+  <!-- BOARD -->
+  <div class="board-wrap">
+    <div class="board-header-row">
+      <div>Nombre</div>
+      <div>Parque</div>
+      <div>Tipo</div>
+      <div>Fabricante</div>
+      <div>Categoría</div>
+    </div>
+    <div class="attempts-container" id="attemptsContainer">
+      <div class="empty-state">
+        <div class="empty-icon">🎯</div>
+        <div>Selecciona una atracción y pulsa Enviar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIN -->
+  <div class="win-banner" id="winBanner">
+    <div class="win-emoji">🏆</div>
+    <div class="win-title">¡Lo has conseguido!</div>
+    <div class="win-sub" id="winSub">Has adivinado la montaña rusa del día en X intentos.</div>
+    <div class="win-share-row">
+      <button class="btn-whatsapp" onclick="shareWhatsApp()">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 0C5.376 0 0 5.374 0 11.988c0 2.114.554 4.1 1.522 5.828L.055 23.454l5.797-1.52C7.617 22.871 9.75 23.4 11.99 23.4 18.605 23.4 24 18.026 24 11.412 24 4.8 18.605 0 11.99 0zm0 21.455c-1.942 0-3.784-.522-5.373-1.433l-.385-.228-3.99 1.046 1.065-3.885-.251-.399C1.997 15.072 1.5 13.58 1.5 11.988 1.5 6.226 6.226 1.5 11.99 1.5c5.764 0 10.51 4.726 10.51 10.488 0 5.763-4.747 9.467-10.51 9.467z"/></svg>
+        WhatsApp
+      </button>
+      <button class="win-share" onclick="shareResult()" style="margin-top:0;">📤 Más opciones</button>
+    </div>
+  </div>
+
+  <!-- LOSE -->
+  <div class="lose-banner" id="loseBanner">
+    <div class="lose-title">¡Casi!</div>
+    <div class="lose-answer" id="loseAnswer">La montaña rusa era <strong>?</strong></div>
+    <button class="btn-retry" onclick="resetGame()">Jugar de nuevo</button>
+  </div>
+
+  <!-- HOW TO PLAY -->
+  <div class="how-to">
+    <div class="how-to-title">¿Cómo se juega?</div>
+    <div class="how-to-items">
+      <div class="how-item">
+        <div class="how-num">1</div>
+        <span>Elige una montaña rusa del desplegable y pulsa <strong>Enviar</strong>.</span>
+      </div>
+      <div class="how-item">
+        <div class="how-num">2</div>
+        <span><span style="color:var(--green)">Verde</span> = dato correcto. <span style="color:var(--yellow)">Amarillo</span> = cerca (±10m de altura o ±1 inversión). <span style="color:var(--red)">Rojo</span> = incorrecto.</span>
+      </div>
+      <div class="how-item">
+        <div class="how-num">3</div>
+        <span>Las flechas 🔼🔽 te indican si la altura real es mayor o menor. Amarillo = ±10m.</span>
+      </div>
+      <div class="how-item">
+        <div class="how-num">4</div>
+        <span>Tienes <strong>6 intentos</strong>. El juego incluye montañas rusas (🎢 Coaster) y atracciones planas (🎡 Flat) de parques españoles.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-footer">
+    Un juego de <a href="index.html">Entre Dioses y Atracciones</a> · <a href="politica.html" style="color:var(--text-dimmer);">Privacidad</a>
+  </div>
+
+  <!-- GLOBAL STATS -->
+  <div class="global-stats" id="globalStats">
+    <div class="global-stats-title">📊 Estadísticas de hoy</div>
+    <div class="global-stats-grid">
+      <div class="gs-item">
+        <div class="gs-num" id="gsTotal">—</div>
+        <div class="gs-label">Jugadores</div>
+      </div>
+      <div class="gs-item">
+        <div class="gs-num" id="gsWinPct">—</div>
+        <div class="gs-label">% Victoria</div>
+      </div>
+      <div class="gs-item">
+        <div class="gs-num" id="gsAvg">—</div>
+        <div class="gs-label">Media intentos</div>
+      </div>
+    </div>
+    <div class="distrib-wrap">
+      <div class="distrib-title">Distribución de intentos</div>
+      <div id="distribBars"></div>
+    </div>
+  </div>
+
+  <!-- RANKING DIARIO -->
+  <div class="ranking-wrap" id="rankingWrap">
+    <div class="ranking-title">
+      🏆 Ranking del día
+      <span class="ranking-date" id="rankingDate"></span>
+    </div>
+    <div id="rankingList"><div class="ranking-loading">Cargando ranking...</div></div>
+  </div>
+
+</div>
+
+<!-- MODAL HITO DE RACHA -->
+<div class="milestone-overlay" id="milestoneModal">
+  <div class="milestone-box">
+    <button class="milestone-close" onclick="document.getElementById('milestoneModal').classList.remove('show')">✕</button>
+    <span class="milestone-fire" id="milestoneEmoji">🔥</span>
+    <div class="milestone-num" id="milestoneNum">7</div>
+    <div class="milestone-label">días seguidos</div>
+    <div class="milestone-msg" id="milestoneMsg">¡Una semana jugando al Coasterle! Eres un crack.</div>
+    <div class="milestone-btns">
+      <button class="btn-whatsapp" id="milestoneBtnWA" onclick="shareMilestoneWhatsApp()">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 0C5.376 0 0 5.374 0 11.988c0 2.114.554 4.1 1.522 5.828L.055 23.454l5.797-1.52C7.617 22.871 9.75 23.4 11.99 23.4 18.605 23.4 24 18.026 24 11.412 24 4.8 18.605 0 11.99 0zm0 21.455c-1.942 0-3.784-.522-5.373-1.433l-.385-.228-3.99 1.046 1.065-3.885-.251-.399C1.997 15.072 1.5 13.58 1.5 11.988 1.5 6.226 6.226 1.5 11.99 1.5c5.764 0 10.51 4.726 10.51 10.488 0 5.763-4.747 9.467-10.51 9.467z"/></svg>
+        Compartir en WhatsApp
+      </button>
+      <button class="btn-share-other" onclick="shareMilestoneOther()">📤 Otras apps</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RESULTADO -->
+<div class="modal-overlay" id="nicknameModal">
+  <div class="modal-box">
+    <div class="modal-emoji" id="modalEmoji">🏆</div>
+    <div class="modal-title" id="modalTitle">¡Lo has conseguido!</div>
+    <div class="modal-sub" id="modalSub">Inicia sesión con Google para guardar tu resultado en el ranking.</div>
+    <!-- Si no está logado: botón Google -->
+    <div id="modalLoginArea">
+      <button class="btn-google" id="modalGoogleBtn" style="width:100%; justify-content:center; padding:12px 20px; font-size:14px; border-radius:12px; margin-bottom:12px;">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Entrar con Google
+      </button>
+      <span class="modal-skip" id="modalSkip">Guardar como anónimo</span>
+    </div>
+    <!-- Si ya está logado: guardar directo -->
+    <div id="modalLoggedArea" style="display:none;">
+      <button class="modal-btn" id="modalSubmitBtn">Guardar en el ranking</button>
+      <span class="modal-skip" id="modalSkipLogged">Cerrar sin guardar</span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+// ═══ FIREBASE ═══
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, where, orderBy, limit, getDocs, increment, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBj3fpAXPtXRSVF1pjrbeLPI_Zv37ku2e8",
+  authDomain: "quiz-entrediosesyatracciones.firebaseapp.com",
+  projectId: "quiz-entrediosesyatracciones",
+  storageBucket: "quiz-entrediosesyatracciones.firebasestorage.app",
+  messagingSenderId: "969589747522",
+  appId: "1:969589747522:web:694ec6cec812b4b15a22db",
+  measurementId: "G-LZMHZ8BWGT"
+};
+
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// ─── Estado de auth ──────────────────────────────────────────────
+let currentUser = null;
+
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  if (user) {
+    // Mostrar chip de usuario
+    document.getElementById('btnLogin').style.display   = 'none';
+    document.getElementById('userChip').style.display   = 'flex';
+    document.getElementById('userName').textContent     = user.displayName?.split(' ')[0] || 'Tú';
+    const av = document.getElementById('userAvatar');
+    if (user.photoURL) {
+      av.outerHTML = `<img class="user-avatar" id="userAvatar" src="${user.photoURL}" referrerpolicy="no-referrer">`;
+    } else {
+      av.textContent = (user.displayName || 'U')[0].toUpperCase();
+    }
+    // Cargar racha desde Firestore
+    await loadUserStreak(user.uid);
+  } else {
+    document.getElementById('btnLogin').style.display   = 'flex';
+    document.getElementById('userChip').style.display   = 'none';
+    showLocalStreak();
+  }
+});
+
+// Botón login nav
+document.getElementById('btnLogin').addEventListener('click', async () => {
+  try { await signInWithPopup(auth, provider); } catch(e) { console.error(e); }
+});
+
+// Botón signout
+document.getElementById('btnSignout').addEventListener('click', async () => {
+  await signOut(auth);
+});
+
+// Botón Google en modal
+document.getElementById('modalGoogleBtn').addEventListener('click', async () => {
+  try {
+    await signInWithPopup(auth, provider);
+    // Una vez logado, mostrar área de guardar
+    document.getElementById('modalLoginArea').style.display  = 'none';
+    document.getElementById('modalLoggedArea').style.display = 'block';
+    document.getElementById('modalSub').textContent = `Hola ${auth.currentUser?.displayName?.split(' ')[0]}! Guarda tu resultado.`;
+  } catch(e) { console.error(e); }
+});
+
+// ═══ JUEGO ═══
+const MAX_ATTEMPTS = 6;
+
+const COASTERS = [
+  // ── TERRA MÍTICA ─────────────────────────────────────────────
+  { id: 1,  name: "Titánide",                   park: "Terra Mítica",  type: "Acero invertido",   manufacturer: "Vekoma", category: "coaster" },
+  { id: 2,  name: "Inferno",                    park: "Terra Mítica",  type: "Coaster acero",     manufacturer: "Intamin", category: "coaster" },
+  { id: 3,  name: "Cataratas del Nilo",          park: "Terra Mítica",  type: "Acuática - Flume",  manufacturer: "Mack Rides", category: "flat"    },
+  { id: 4,  name: "La Furia de Tritón",          park: "Terra Mítica",  type: "Acuática",          manufacturer: "Intamin", category: "flat"    },
+  { id: 5,  name: "Rápidos de Argos",            park: "Terra Mítica",  type: "Acuática - Rapids", manufacturer: "Intamin", category: "flat"    },
+  { id: 6,  name: "Synkope",                    park: "Terra Mítica",  type: "Flat",              manufacturer: "Mondial Rides", category: "flat"    },
+  { id: 7,  name: "Los Ícaros",                 park: "Terra Mítica",  type: "Flat",              manufacturer: "Zierer", category: "flat"    },
+  { id: 8,  name: "El Vuelo del Fénix",          park: "Terra Mítica",  type: "Flat",              manufacturer: "Intamin", category: "flat"    },
+  { id: 9,  name: "Tornado",                    park: "Terra Mítica",  type: "Flat",              manufacturer: "Zamperla", category: "flat"    },
+  { id: 10, name: "Mithos",                     park: "Terra Mítica",  type: "Flat",              manufacturer: "Wooddesign", category: "flat"    },
+  { id: 11, name: "La Cólera de Akiles",         park: "Terra Mítica",  type: "Flat",              manufacturer: "Mondial Rides", category: "flat"    },
+  { id: 12, name: "Infinnito",                  park: "Terra Mítica",  type: "Flat",              manufacturer: "Intamin", category: "flat"    },
+  { id: 13, name: "El Laberinto del Minotauro",  park: "Terra Mítica",  type: "Dark Ride",         manufacturer: "Sally Corp", category: "flat"    },
+
+  // ── PARQUE WARNER ────────────────────────────────────────────
+  { id: 14, name: "Batman Gotham City Escape",   park: "Parque Warner", type: "Multilaunch",       manufacturer: "Intamin", category: "coaster" },
+  { id: 15, name: "Superman: La Atracción",      park: "Parque Warner", type: "Acero",             manufacturer: "Bolliger & Mabillard", category: "coaster" },
+  { id: 16, name: "Shadows of Arkham",           park: "Parque Warner", type: "Acero invertido",   manufacturer: "Vekoma", category: "coaster" },
+  { id: 17, name: "Stunt Fall",                 park: "Parque Warner", type: "Acero invertido",   manufacturer: "Vekoma", category: "coaster" },
+  { id: 18, name: "Coaster Express",            park: "Parque Warner", type: "Madera",            manufacturer: "Intamin", category: "coaster" },
+  { id: 19, name: "La Venganza del Enigma",      park: "Parque Warner", type: "Caída libre",       manufacturer: "S&S Power", category: "flat"    },
+  { id: 20, name: "Hotel Embrujado",            park: "Parque Warner", type: "Dark Ride",         manufacturer: "Vekoma", category: "flat"    },
+  { id: 21, name: "La Aventura de Scooby-Doo",   park: "Parque Warner", type: "Dark Ride",         manufacturer: "Sally Corp", category: "flat"    },
+  { id: 22, name: "Río Bravo",                  park: "Parque Warner", type: "Acuática - Rapids", manufacturer: "Intamin", category: "flat"    },
+  { id: 23, name: "Cataratas Salvajes",          park: "Parque Warner", type: "Acuática - Flume",  manufacturer: "Intamin", category: "flat"    },
+  { id: 24, name: "Lex Luthor Invertatron",      park: "Parque Warner", type: "Flat",              manufacturer: "Huss Rides", category: "flat"    },
+  { id: 25, name: "Mr. Freeze",                 park: "Parque Warner", type: "Flat",              manufacturer: "Zierer", category: "flat"    },
+  { id: 26, name: "Rápidos ACME",               park: "Parque Warner", type: "Acuática - Rapids", manufacturer: "Intamin", category: "flat"    },
+  { id: 27, name: "Oso Yogui",                  park: "Parque Warner", type: "Acuática",          manufacturer: "TAA Industries", category: "flat"    },
+
+  // ── PORTAVENTURA ─────────────────────────────────────────────
+  { id: 28, name: "Shambhala",                  park: "PortAventura",  type: "Hypercoaster",      manufacturer: "Bolliger & Mabillard", category: "coaster" },
+  { id: 29, name: "Dragon Khan",                park: "PortAventura",  type: "Acero invertido",   manufacturer: "Bolliger & Mabillard", category: "coaster" },
+  { id: 30, name: "Furius Baco",                park: "PortAventura",  type: "Wing coaster",      manufacturer: "Intamin", category: "coaster" },
+  { id: 31, name: "Stampida",                   park: "PortAventura",  type: "Madera",            manufacturer: "Philadelphia Toboggan", category: "coaster" },
+  { id: 32, name: "Tomahawk",                   park: "PortAventura",  type: "Coaster acero",     manufacturer: "Philadelphia Toboggan", category: "coaster" },
+  { id: 33, name: "Hurakan Condor",             park: "PortAventura",  type: "Caída libre",       manufacturer: "Intamin", category: "flat"    },
+  { id: 34, name: "Grand Canyon Rapids",         park: "PortAventura",  type: "Acuática - Rapids", manufacturer: "Intamin", category: "flat"    },
+  { id: 35, name: "Tutuki Splash",              park: "PortAventura",  type: "Acuática - Flume",  manufacturer: "Intamin", category: "flat"    },
+  { id: 36, name: "Uncharted",                  park: "PortAventura",  type: "Dark Ride",         manufacturer: "Intamin", category: "flat"    },
+  { id: 37, name: "Red Force",                  park: "Ferrari Land",  type: "Lanzado",           manufacturer: "Intamin", category: "coaster" },
+
+  // ── ISLA MÁGICA ───────────────────────────────────────────────
+  { id: 38, name: "Jaguar",                     park: "Isla Mágica",   type: "Acero invertido",   manufacturer: "Vekoma", category: "coaster" },
+  { id: 39, name: "Anaconda",                   park: "Isla Mágica",   type: "Acuática - Flume",  manufacturer: "Mack Rides", category: "flat"    },
+  { id: 40, name: "Iguazú",                     park: "Isla Mágica",   type: "Acuática",          manufacturer: "Intamin", category: "flat"    },
+  { id: 41, name: "El Desafío",                 park: "Isla Mágica",   type: "Caída libre",       manufacturer: "Maurer Söhne", category: "flat"    },
+  { id: 42, name: "Navío Barbarroja",           park: "Isla Mágica",   type: "Flat",              manufacturer: "SBF VISA Group", category: "flat"    },
+  { id: 43, name: "Rápidos del Orinoco",        park: "Isla Mágica",   type: "Acuática - Rapids", manufacturer: "Intamin", category: "flat"    },
+  { id: 44, name: "El Dorado",                  park: "Isla Mágica",   type: "Flat",              manufacturer: "Zamperla", category: "flat"    },
+  { id: 45, name: "Capitán Balas",              park: "Isla Mágica",   type: "Dark Ride",         manufacturer: "Mack Rides", category: "flat"    },
+
+  // ── PARQUE DE ATRACCIONES DE MADRID ──────────────────────────
+  { id: 46, name: "Abismo",                     park: "P.A. Madrid",   type: "Coaster acero",     manufacturer: "Intamin", category: "coaster" },
+  { id: 47, name: "Tarántula",                  park: "P.A. Madrid",   type: "Spinning coaster",  manufacturer: "Gerstlauer", category: "coaster" },
+  { id: 48, name: "Tornado",                    park: "P.A. Madrid",   type: "Coaster acero",     manufacturer: "Zamperla", category: "coaster" },
+  { id: 49, name: "La Lanzadera",               park: "P.A. Madrid",   type: "Caída libre",       manufacturer: "S&S Power", category: "flat"    },
+  { id: 50, name: "Tifón",                      park: "P.A. Madrid",   type: "Flat",              manufacturer: "Huss Rides", category: "flat"    },
+  { id: 51, name: "Los Fiordos",                park: "P.A. Madrid",   type: "Acuática - Flume",  manufacturer: "Mack Rides", category: "flat"    },
+  { id: 52, name: "Los Rápidos",                park: "P.A. Madrid",   type: "Acuática - Rapids", manufacturer: "Intamin", category: "flat"    },
+  { id: 53, name: "Star Flyer",                 park: "P.A. Madrid",   type: "Flat",              manufacturer: "Funtime", category: "flat"    },
+];
+
+// ─── Fecha y target ──────────────────────────────────────────────
+const now   = new Date();
+const TODAY = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+// Orden predefinido — mezcla parques y alterna coasters con flats
+const DAILY_ORDER = [
+  // Ciclo de 53 días — alterna parques y coasters/flats
+  28, // Día 1  — Shambhala (PortAventura)
+  1,  // Día 2  — Titánide (Terra Mítica)
+  19, // Día 3  — La Venganza del Enigma (Warner)
+  38, // Día 4  — Jaguar (Isla Mágica)
+  46, // Día 5  — Abismo (P.A. Madrid)
+  29, // Día 6  — Dragon Khan (PortAventura)
+  3,  // Día 7  — Cataratas del Nilo (Terra Mítica)
+  14, // Día 8  — Batman Gotham City Escape (Warner)
+  41, // Día 9  — El Desafío (Isla Mágica)
+  49, // Día 10 — La Lanzadera (P.A. Madrid)
+  37, // Día 11 — Red Force (Ferrari Land)
+  6,  // Día 12 — Synkope (Terra Mítica)
+  15, // Día 13 — Superman: La Atracción (Warner)
+  39, // Día 14 — Anaconda (Isla Mágica)
+  47, // Día 15 — Tarántula (P.A. Madrid)
+  30, // Día 16 — Furius Baco (PortAventura)
+  2,  // Día 17 — Inferno (Terra Mítica)
+  16, // Día 18 — Shadows of Arkham (Warner)
+  40, // Día 19 — Iguazú (Isla Mágica)
+  51, // Día 20 — Los Fiordos (P.A. Madrid)
+  33, // Día 21 — Hurakan Condor (PortAventura)
+  9,  // Día 22 — Tornado (Terra Mítica)
+  17, // Día 23 — Stunt Fall (Warner)
+  43, // Día 24 — Rápidos del Orinoco (Isla Mágica)
+  48, // Día 25 — Tornado (P.A. Madrid)
+  34, // Día 26 — Grand Canyon Rapids (PortAventura)
+  13, // Día 27 — El Laberinto del Minotauro (Terra Mítica)
+  18, // Día 28 — Coaster Express (Warner)
+  42, // Día 29 — Navío Barbarroja (Isla Mágica)
+  53, // Día 30 — Star Flyer (P.A. Madrid)
+  31, // Día 31 — Stampida (PortAventura)
+  4,  // Día 32 — La Furia de Tritón (Terra Mítica)
+  20, // Día 33 — Hotel Embrujado (Warner)
+  44, // Día 34 — El Dorado (Isla Mágica)
+  50, // Día 35 — Tifón (P.A. Madrid)
+  35, // Día 36 — Tutuki Splash (PortAventura)
+  7,  // Día 37 — Los Ícaros (Terra Mítica)
+  21, // Día 38 — La Aventura de Scooby-Doo (Warner)
+  45, // Día 39 — Capitán Balas (Isla Mágica)
+  52, // Día 40 — Los Rápidos (P.A. Madrid)
+  36, // Día 41 — Uncharted (PortAventura)
+  10, // Día 42 — Mithos (Terra Mítica)
+  22, // Día 43 — Río Bravo (Warner)
+  32, // Día 44 — Tomahawk (PortAventura)
+  8,  // Día 45 — El Vuelo del Fénix (Terra Mítica)
+  23, // Día 46 — Cataratas Salvajes (Warner)
+  11, // Día 47 — La Cólera de Akiles (Terra Mítica)
+  24, // Día 48 — Lex Luthor Invertatron (Warner)
+  5,  // Día 49 — Rápidos de Argos (Terra Mítica)
+  25, // Día 50 — Mr. Freeze (Warner)
+  12, // Día 51 — Infinnito (Terra Mítica)
+  26, // Día 52 — Rápidos ACME (Warner)
+  27, // Día 53 — Oso Yogui (Warner)
+];
+
+// Calcula qué día del ciclo es hoy (desde el 1 de junio de 2025)
+const START_DATE = new Date('2025-06-01');
+const diffMs     = new Date(TODAY) - START_DATE;
+const diffDays   = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+const cycleIndex = ((diffDays % DAILY_ORDER.length) + DAILY_ORDER.length) % DAILY_ORDER.length;
+const targetId   = DAILY_ORDER[cycleIndex];
+
+const targetCoaster = COASTERS.find(c => c.id === targetId);
+
+let attempts     = 0;
+let gameOver     = false;
+let resultEmojis = [];
+
+// ─── ID de usuario — usa Google uid si está logado, si no uid anónimo ───
+function getUserId() {
+  if (currentUser) return currentUser.uid;
+  let uid = localStorage.getItem('coasterle_uid');
+  if (!uid) {
+    uid = 'anon_' + Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+    localStorage.setItem('coasterle_uid', uid);
+  }
+  return uid;
+}
+
+// ─── Racha desde Firestore (usuarios con Google) ─────────────────
+async function loadUserStreak(uid) {
+  try {
+    const snap = await getDoc(doc(db, 'usuarios', uid));
+    if (snap.exists()) {
+      const d = snap.data();
+      const streak = d.streak || 0;
+      if (streak >= 2) {
+        document.getElementById('streakNum').textContent = streak;
+        document.getElementById('streakBanner').style.display = 'flex';
+      }
+    }
+  } catch(e) { showLocalStreak(); }
+}
+
+// ─── Racha local (usuarios anónimos) ─────────────────────────────
+function getLocalStreak() {
+  const raw = localStorage.getItem('coasterle_streak');
+  return raw ? JSON.parse(raw) : { count: 0, lastDay: null };
+}
+
+function showLocalStreak() {
+  const s = getLocalStreak();
+  if (s.count >= 2) {
+    document.getElementById('streakNum').textContent = s.count;
+    document.getElementById('streakBanner').style.display = 'flex';
+  }
+}
+
+async function computeAndSaveStreak(uid, won) {
+  if (!uid.startsWith('anon_')) {
+    // Usuario con Google — racha en Firestore
+    try {
+      const userRef  = doc(db, 'usuarios', uid);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.exists() ? userSnap.data() : {};
+      const yesterday = new Date(now);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}-${String(yesterday.getDate()).padStart(2,'0')}`;
+      let newStreak = 1;
+      if (userData.lastPlayedDay === yStr) {
+        newStreak = (userData.streak || 0) + 1;
+      } else if (userData.lastPlayedDay === TODAY) {
+        newStreak = userData.streak || 1; // ya jugó hoy, no cambiar
+      } else if (!won) {
+        newStreak = 0;
+      }
+      await setDoc(userRef, {
+        uid,
+        displayName: currentUser?.displayName || 'Anónimo',
+        photoURL:    currentUser?.photoURL || null,
+        streak:      newStreak,
+        lastPlayedDay: TODAY,
+        totalPlayed: increment(1),
+        totalWins:   won ? increment(1) : increment(0),
+      }, { merge: true });
+      document.getElementById('streakNum').textContent = newStreak;
+      if (newStreak >= 1) document.getElementById('streakBanner').style.display = 'flex';
+      return newStreak;
+    } catch(e) { return 1; }
+  } else {
+    // Anónimo — racha local
+    const s = getLocalStreak();
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}-${String(yesterday.getDate()).padStart(2,'0')}`;
+    if (s.lastDay === TODAY) return s.count;
+    const newCount = (s.lastDay === yStr) ? s.count + 1 : (won ? 1 : 0);
+    localStorage.setItem('coasterle_streak', JSON.stringify({ count: newCount, lastDay: TODAY }));
+    return newCount;
+  }
+}
+
+// ─── Anti-trampa: ¿ya jugó hoy? ─────────────────────────────────
+function alreadyPlayedToday() {
+  return localStorage.getItem(`coasterle_played_${TODAY}`) === '1';
+}
+function markPlayedToday() {
+  localStorage.setItem(`coasterle_played_${TODAY}`, '1');
+}
+
+// ─── Firestore helpers ───────────────────────────────────────────
+async function saveResultToFirestore(won, attemptsUsed, emojiGrid) {
+  const uid      = currentUser ? currentUser.uid : getUserId();
+  const nickname = currentUser ? (currentUser.displayName?.split(' ')[0] || 'Anónimo') : 'Anónimo';
+  const streak   = await computeAndSaveStreak(uid, won);
+  markPlayedToday();
+
+  const playerDocId = `${TODAY}_${uid}`;
+  await setDoc(doc(db, 'resultados', playerDocId), {
+    userId:   uid,
+    nickname,
+    photoURL: currentUser?.photoURL || null,
+    date:     TODAY,
+    won,
+    attempts: attemptsUsed,
+    streak,
+    emojis:   emojiGrid,
+    ts:       serverTimestamp()
+  });
+
+  // Estadísticas globales del día
+  const statsRef  = doc(db, 'stats_diarias', TODAY);
+  const statsSnap = await getDoc(statsRef);
+  if (!statsSnap.exists()) {
+    await setDoc(statsRef, {
+      total: 1, wins: won ? 1 : 0,
+      totalAttempts: attemptsUsed,
+      dist: { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, [attemptsUsed]: 1 }
+    });
+  } else {
+    const d = statsSnap.data();
+    const newDist = d.dist || {};
+    newDist[attemptsUsed] = (newDist[attemptsUsed] || 0) + 1;
+    await updateDoc(statsRef, {
+      total: increment(1), wins: won ? increment(1) : increment(0),
+      totalAttempts: increment(attemptsUsed), dist: newDist
+    });
+  }
+}
+
+async function loadRanking() {
+  const list = document.getElementById('rankingList');
+  const myUid = currentUser ? currentUser.uid : getUserId();
+  try {
+    const q = query(
+      collection(db, 'resultados'),
+      where('date', '==', TODAY),
+      where('won', '==', true),
+      orderBy('attempts', 'asc'),
+      orderBy('ts', 'asc'),
+      limit(10)
+    );
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      list.innerHTML = '<div class="ranking-empty">Sé el primero en aparecer aquí hoy 🎯</div>';
+      return;
+    }
+    list.innerHTML = '';
+    const medals = ['gold','silver','bronze'];
+    snap.docs.forEach((d, i) => {
+      const r    = d.data();
+      const isMe = r.userId === myUid;
+      const row  = document.createElement('div');
+      row.className = 'ranking-row' + (isMe ? ' me' : '');
+      const posClass = medals[i] || '';
+      const avatarHtml = r.photoURL
+        ? `<img class="user-avatar" src="${r.photoURL}" referrerpolicy="no-referrer" style="width:24px;height:24px;">`
+        : `<div class="user-avatar-placeholder" style="width:24px;height:24px;font-size:10px;">${(r.nickname||'?')[0].toUpperCase()}</div>`;
+      row.innerHTML = `
+        <div class="rank-pos ${posClass}">${i+1}</div>
+        ${avatarHtml}
+        <div class="rank-name">${r.nickname}${isMe ? ' <span style="font-size:10px;color:var(--blue);">(tú)</span>' : ''}</div>
+        ${r.streak >= 2 ? `<div class="rank-streak">🔥${r.streak}</div>` : ''}
+        <div class="rank-attempts">${r.attempts}/${MAX_ATTEMPTS}</div>
+      `;
+      list.appendChild(row);
+    });
+  } catch(e) {
+    list.innerHTML = '<div class="ranking-empty">No se pudo cargar el ranking.</div>';
+  }
+}
+
+async function loadGlobalStats() {
+  try {
+    const snap = await getDoc(doc(db, 'stats_diarias', TODAY));
+    if (!snap.exists()) return;
+    const d = snap.data();
+    const pct = d.total > 0 ? Math.round((d.wins / d.total) * 100) : 0;
+    const avg = d.wins > 0 ? (d.totalAttempts / d.total).toFixed(1) : '—';
+    document.getElementById('gsTotal').textContent = d.total;
+    document.getElementById('gsWinPct').textContent = pct + '%';
+    document.getElementById('gsAvg').textContent = avg;
+
+    // Distribución
+    const bars = document.getElementById('distribBars');
+    bars.innerHTML = '';
+    const dist = d.dist || {};
+    const maxVal = Math.max(...Object.values(dist), 1);
+    for (let i = 1; i <= 6; i++) {
+      const val = dist[i] || 0;
+      const pctBar = Math.round((val / maxVal) * 100);
+      bars.innerHTML += `
+        <div class="distrib-row">
+          <div class="distrib-label">${i}</div>
+          <div class="distrib-bar-wrap">
+            <div class="distrib-bar" style="width:${pctBar}%">${val > 0 ? val : ''}</div>
+          </div>
+        </div>`;
+    }
+  } catch(e) { /* silencioso */ }
+}
+
+// ─── Init ────────────────────────────────────────────────────────
+loadRanking();
+loadGlobalStats();
+
+// Fecha en ranking
+const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+document.getElementById('rankingDate').textContent =
+  `${days[now.getDay()]} ${now.getDate()}/${now.getMonth()+1}`;
+document.getElementById('dailyLabel').textContent =
+  `${days[now.getDay()]} ${now.getDate()}/${now.getMonth()+1}`;
+
+// ─── Select ──────────────────────────────────────────────────────
+// ─── Buscador ─────────────────────────────────────────────────
+let availableCoasters = [...COASTERS].sort((a,b) => a.name.localeCompare(b.name));
+let selectedCoaster   = null;
+
+const searchInput    = document.getElementById('searchInput');
+const searchDropdown = document.getElementById('searchDropdown');
+const selectedChip   = document.getElementById('selectedChip');
+const selectedName   = document.getElementById('selectedName');
+const chipClear      = document.getElementById('chipClear');
+
+function renderDropdown(query) {
+  const q = query.toLowerCase().trim();
+  const filtered = availableCoasters.filter(c =>
+    c.name.toLowerCase().includes(q) || c.park.toLowerCase().includes(q)
+  );
+  searchDropdown.innerHTML = '';
+  if (!filtered.length) {
+    searchDropdown.innerHTML = '<div class="search-option" style="opacity:0.5;cursor:default;">Sin resultados</div>';
+  } else {
+    filtered.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'search-option';
+      div.innerHTML = `<span>${c.category === 'coaster' ? '🎢' : '🎡'} ${c.name}</span><span class="search-option-park">${c.park}</span>`;
+      div.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        selectCoaster(c);
+      });
+      searchDropdown.appendChild(div);
+    });
+  }
+  searchDropdown.classList.add('open');
+}
+
+function selectCoaster(c) {
+  selectedCoaster = c;
+  searchInput.style.display    = 'none';
+  selectedChip.classList.add('show');
+  selectedName.textContent     = `${c.category === 'coaster' ? '🎢' : '🎡'} ${c.name} — ${c.park}`;
+  searchDropdown.classList.remove('open');
+  document.getElementById('btnGuess').disabled = false;
+}
+
+function clearSelection() {
+  selectedCoaster = null;
+  searchInput.style.display = '';
+  searchInput.value = '';
+  selectedChip.classList.remove('show');
+  searchDropdown.classList.remove('open');
+  document.getElementById('btnGuess').disabled = true;
+}
+
+searchInput.addEventListener('input', () => renderDropdown(searchInput.value));
+searchInput.addEventListener('focus', () => renderDropdown(searchInput.value));
+searchInput.addEventListener('blur',  () => setTimeout(() => searchDropdown.classList.remove('open'), 150));
+chipClear.addEventListener('click', clearSelection);
+
+// Si ya jugó hoy, bloquear
+if (alreadyPlayedToday()) {
+  disableGame();
+  document.getElementById('btnGuess').title = 'Ya jugaste hoy. ¡Vuelve mañana!';
+  const note = document.createElement('p');
+  note.style.cssText = 'text-align:center;font-size:12px;color:var(--text-dimmer);margin-top:10px;';
+  note.textContent = '✅ Ya jugaste hoy. ¡Vuelve mañana!';
+  document.querySelector('.controls').after(note);
+}
+
+// ─── Botón enviar ─────────────────────────────────────────────────
+document.getElementById('btnGuess').addEventListener('click', () => {
+  if (!selectedCoaster || gameOver) return;
+  const guess = selectedCoaster;
+  // Quitar de las opciones disponibles
+  availableCoasters = availableCoasters.filter(c => c.id !== guess.id);
+  clearSelection();
+  renderRow(guess);
+});
+
+// ─── Render fila ─────────────────────────────────────────────────
+function renderRow(guess) {
+  const empty = document.querySelector('.empty-state');
+  if (empty) empty.remove();
+
+  attempts++;
+  updateStats();
+
+  const row = document.createElement('div');
+  row.className = 'attempt-row';
+  row.style.animationDelay = `${(attempts-1) * 0.05}s`;
+
+  const rowEmojis = [];
+
+  row.appendChild(makeCell(guess.name, 'neutral', null));
+  rowEmojis.push('⬜');
+
+  const parkOk = guess.park === targetCoaster.park;
+  row.appendChild(makeCell(guess.park, parkOk ? 'correct' : 'wrong', null));
+  rowEmojis.push(parkOk ? '🟩' : '🟥');
+
+  const typeOk = guess.type === targetCoaster.type;
+  row.appendChild(makeCell(guess.type, typeOk ? 'correct' : 'wrong', null));
+  rowEmojis.push(typeOk ? '🟩' : '🟥');
+
+  const mfOk = guess.manufacturer === targetCoaster.manufacturer;
+  const mfClass = mfOk ? 'correct' : 'wrong';
+  const mfEmoji = mfOk ? '🟩' : '🟥';
+  row.appendChild(makeCell(guess.manufacturer, mfClass, null));
+  rowEmojis.push(mfEmoji);
+
+  const catOk = guess.category === targetCoaster.category;
+  const catLabel = guess.category === 'coaster' ? '🎢 Coaster' : '🎡 Flat';
+  row.appendChild(makeCell(catLabel, catOk ? 'correct' : 'wrong', null));
+  rowEmojis.push(catOk ? '🟩' : '🟥');
+
+  document.getElementById('attemptsContainer').appendChild(row);
+  resultEmojis.push(rowEmojis.join(''));
+
+  // Victoria
+  if (guess.id === targetCoaster.id) {
+    gameOver = true;
+    disableGame();
+    setTimeout(() => {
+      document.getElementById('winSub').textContent =
+        `Has adivinado "${targetCoaster.name}" en ${attempts} ${attempts === 1 ? 'intento' : 'intentos'}.`;
+      document.getElementById('winBanner').classList.add('show');
+      showNicknameModal(true);
+    }, 600);
+    return;
+  }
+
+  // Derrota
+  if (attempts >= MAX_ATTEMPTS) {
+    gameOver = true;
+    disableGame();
+    setTimeout(() => {
+      document.getElementById('loseAnswer').innerHTML =
+        `La atracción era <strong>${targetCoaster.name}</strong> en ${targetCoaster.park}.`;
+      document.getElementById('loseBanner').classList.add('show');
+      showNicknameModal(false);
+    }, 600);
+  }
+}
+
+// ─── Modal resultado ──────────────────────────────────────────────
+function showNicknameModal(won) {
+  const modal = document.getElementById('nicknameModal');
+  document.getElementById('modalEmoji').textContent = won ? '🏆' : '😤';
+  document.getElementById('modalTitle').textContent = won ? '¡Lo has conseguido!' : '¡Casi!';
+
+  if (currentUser) {
+    // Ya logado — mostrar área de guardar directo
+    document.getElementById('modalLoginArea').style.display  = 'none';
+    document.getElementById('modalLoggedArea').style.display = 'block';
+    document.getElementById('modalSub').textContent =
+      `Hola ${currentUser.displayName?.split(' ')[0]}! Guarda tu resultado en el ranking.`;
+  } else {
+    document.getElementById('modalLoginArea').style.display  = 'block';
+    document.getElementById('modalLoggedArea').style.display = 'none';
+    document.getElementById('modalSub').textContent = won
+      ? 'Inicia sesión con Google para guardar tu resultado en el ranking.'
+      : 'Guarda tu resultado aunque no lo hayas acertado.';
+  }
+  modal.classList.add('show');
+
+  // Guardar con Google (ya logado)
+  document.getElementById('modalSubmitBtn').onclick = async () => {
+    modal.classList.remove('show');
+    await saveResultToFirestore(won, attempts, resultEmojis.join('\n'));
+    await loadRanking();
+    await loadGlobalStats();
+    const streak = parseInt(document.getElementById('streakNum').textContent) || 0;
+    checkMilestone(streak);
+  };
+
+  // Cerrar sin guardar (logado)
+  document.getElementById('modalSkipLogged').onclick = () => {
+    modal.classList.remove('show');
+  };
+
+  // Guardar anónimo
+  document.getElementById('modalSkip').onclick = async () => {
+    modal.classList.remove('show');
+    await saveResultToFirestore(won, attempts, resultEmojis.join('\n'));
+    await loadRanking();
+    await loadGlobalStats();
+    const streak = parseInt(document.getElementById('streakNum').textContent) || 0;
+    checkMilestone(streak);
+  };
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────
+function makeCell(text, cls, hint) {
+  const cell = document.createElement('div');
+  cell.className = `cell ${cls}`;
+  cell.textContent = text;
+  if (hint) {
+    const span = document.createElement('div');
+    span.className = 'cell-hint';
+    span.textContent = hint;
+    cell.appendChild(span);
+  }
+  return cell;
+}
+
+function updateStats() {
+  document.getElementById('statAttempts').textContent = attempts;
+  document.getElementById('statLeft').textContent = Math.max(0, MAX_ATTEMPTS - attempts);
+}
+
+function disableGame() {
+  document.getElementById('btnGuess').disabled = true;
+  document.getElementById('searchInput').disabled = true;
+}
+
+// ─── Compartir ────────────────────────────────────────────────────
+function buildResultText() {
+  const won    = document.getElementById('winBanner').classList.contains('show');
+  const streak = parseInt(document.getElementById('streakNum').textContent) || 0;
+  const streakLine = streak >= 2 ? `🔥 Racha: ${streak} días\n` : '';
+  const header = `🎢 COASTERLE — ${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}`;
+  const result = won ? `✅ ${attempts}/${MAX_ATTEMPTS}` : `❌ X/${MAX_ATTEMPTS}`;
+  const body   = resultEmojis.join('\n');
+  const footer = '👉 entrediosesyatracciones.com';
+  return `${header}\n${result}\n${streakLine}\n${body}\n\n${footer}`;
+}
+
+window.shareWhatsApp = function() {
+  const text = buildResultText();
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+};
+
+window.shareResult = function() {
+  const text = buildResultText();
+  if (navigator.share) {
+    navigator.share({ text });
+  } else {
+    navigator.clipboard.writeText(text).then(() => alert('¡Copiado al portapapeles!'));
+  }
+};
+
+window.shareStreak = function() {
+  const streak = parseInt(document.getElementById('streakNum').textContent) || 0;
+  const name   = currentUser?.displayName?.split(' ')[0] || 'Yo';
+  const text   = `🔥 ¡${name} lleva ${streak} días seguidos jugando al Coasterle!\n\n¿Eres capaz de adivinar la atracción del día?\n👉 entrediosesyatracciones.com`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+};
+
+// ─── Hitos de racha ───────────────────────────────────────────────
+const MILESTONES = {
+  3:  { emoji: '🔥', msg: '¡3 días seguidos! Estás cogiendo el ritmo.' },
+  7:  { emoji: '🔥🔥', msg: '¡Una semana jugando al Coasterle! Eres un crack.' },
+  14: { emoji: '🔥🔥🔥', msg: '¡Dos semanas seguidas! Eso es dedicación de verdad.' },
+  30: { emoji: '👑', msg: '¡UN MES seguido! Eres una leyenda del Coasterle.' },
+  50: { emoji: '🏆', msg: '50 días consecutivos. Esto ya es historia.' },
+  100:{ emoji: '🐐', msg: '100 días. G.O.A.T. No hay más que decir.' },
+};
+
+function checkMilestone(streak) {
+  if (MILESTONES[streak]) {
+    const m = MILESTONES[streak];
+    document.getElementById('milestoneEmoji').textContent = m.emoji;
+    document.getElementById('milestoneNum').textContent   = streak;
+    document.getElementById('milestoneMsg').textContent   = m.msg;
+    setTimeout(() => {
+      document.getElementById('milestoneModal').classList.add('show');
+    }, 1800); // aparece después del modal de resultado
+  }
+}
+
+window.shareMilestoneWhatsApp = function() {
+  const streak = document.getElementById('milestoneNum').textContent;
+  const m      = MILESTONES[parseInt(streak)];
+  const name   = currentUser?.displayName?.split(' ')[0] || 'Yo';
+  const text   = `${m?.emoji || '🔥'} ¡${name} lleva ${streak} días seguidos jugando al Coasterle!\n\n${m?.msg || ''}\n\n¿Puedes superarme?\n👉 entrediosesyatracciones.com`;
+  document.getElementById('milestoneModal').classList.remove('show');
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+};
+
+window.shareMilestoneOther = function() {
+  const streak = document.getElementById('milestoneNum').textContent;
+  const m      = MILESTONES[parseInt(streak)];
+  const name   = currentUser?.displayName?.split(' ')[0] || 'Yo';
+  const text   = `${m?.emoji || '🔥'} ¡${name} lleva ${streak} días seguidos jugando al Coasterle!\n\n${m?.msg || ''}\n\n¿Puedes superarme?\n👉 entrediosesyatracciones.com`;
+  document.getElementById('milestoneModal').classList.remove('show');
+  if (navigator.share) {
+    navigator.share({ text });
+  } else {
+    navigator.clipboard.writeText(text).then(() => alert('¡Copiado!'));
+  }
+};
+
+window.resetGame = function() {
+  if (!alreadyPlayedToday()) {
+    attempts = 0; gameOver = false; resultEmojis = [];
+    document.getElementById('attemptsContainer').innerHTML =
+      '<div class="empty-state"><div class="empty-icon">🎯</div><div>Busca una atracción y pulsa Enviar</div></div>';
+    document.getElementById('winBanner').classList.remove('show');
+    document.getElementById('loseBanner').classList.remove('show');
+    document.getElementById('btnGuess').disabled = true;
+    document.getElementById('searchInput').disabled = false;
+    document.getElementById('chipClear').style.display = '';
+    availableCoasters = [...COASTERS].sort((a,b) => a.name.localeCompare(b.name));
+    clearSelection();
+    updateStats();
+    document.getElementById('statLeft').textContent = MAX_ATTEMPTS;
+  }
+};
+
+</script>
+</body>
+</html>
