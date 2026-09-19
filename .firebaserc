@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "quiz-entrediosesyatracciones"
-  }
+    "default": "quiz-entrediosesyatracciones",
+    "quiz": "quiz-entrediosesyatracciones"
+  },
+  "targets": {},
+  "etags": {}
 }
